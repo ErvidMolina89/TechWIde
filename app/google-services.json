@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "875025451419",
+    "project_id": "widetech-6b60e",
+    "storage_bucket": "widetech-6b60e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875025451419:android:edb18777e524d4cd0cb93e",
+        "android_client_info": {
+          "package_name": "com.widetech.mobile.wide_tech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875025451419-fjv3mpehsfo3fieue1vrmvpp9iacc2ao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo72VCcxlEzbyG1iL4BUxgLhr_V3NafC4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875025451419-fjv3mpehsfo3fieue1vrmvpp9iacc2ao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

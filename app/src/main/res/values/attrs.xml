@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SelectorFormularioRegistro_Atributos">
+        <attr name="rol" format="enum">
+            <enum name="Ninguno" value="0"/>
+            <enum name="Paciente" value="1"/>
+            <enum name="Psicologo" value="2"/>
+        </attr>
+        <attr name="mostrar_selector_rol" format="boolean"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="EditTextPersonalizado">
+
+        <attr name="icono_edittext" format="reference"/>
+        <attr name="fondo_icono_edittext" format="reference"/>
+        <attr name="texto_hint" format="string"/>
+        <attr name="texto" format="string"/>
+
+        <attr name="tipo_caja" format="enum">
+            <enum name="Default" value="0"/>
+            <enum name="Enteros" value="1"/>
+            <enum name="Password" value="2"/>
+            <enum name="Email" value="3"/>
+            <enum name="Decimales" value="4"/>
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="item_menu">
+        <attr name="icono_item_menu" format="reference"/>
+        <attr name="fondo_color_icono_item_menu" format="reference"/>
+        <attr name="color_icono" format="reference"/>
+        <attr name="texto_item_menu" format="string"/>
+        <attr name="color_texto_item_menu" format="reference"/>
+        <attr name="fondo_item_menu" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="selector_menu">
+        <attr name="menu_por_perfil" format="enum">
+            <enum name="Ninguno" value="0"/>
+            <enum name="Paciente" value="1"/>
+            <enum name="Psicologo" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="lista_usuarios">
+        <attr name="selector_vista_por_rol" format="enum">
+            <enum name="Ninguno" value="0"/>
+            <enum name="Paciente" value="1"/>
+            <enum name="Psicologo" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="perfil">
+        <attr name="selector_perfil_por_rol" format="enum">
+            <enum name="Ninguno" value="0"/>
+            <enum name="Paciente" value="1"/>
+            <enum name="Psicologo" value="2"/>
+            <enum name="crear_paciente" value="3"/>
+            <enum name="crear_psicologo" value = "4"/>
+            <enum name="mostrar_paciente_desde_psicologo" value = "5"/>
+            <enum name="mostrar_psicologo_desde_paciente" value = "6"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="edicion_campo_formulario">
+        <attr name="editable_campo_formulario" format="boolean"/>
+        <attr name="icono_campo_formulario" format="reference"/>
+        <attr name="titulo_nombre_campo_formulario" format="string"/>
+        <attr name="texto_campo_formulario" format="string"/>
+
+        <attr name="tipo_caja_formulario" format="enum">
+            <enum name="Default" value="0"/>
+            <enum name="Enteros" value="1"/>
+            <enum name="Password" value="2"/>
+            <enum name="Email" value="3"/>
+            <enum name="Decimales" value="4"/>
+        </attr>
+    </declare-styleable>
+
+</resources>

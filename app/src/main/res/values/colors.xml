@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2d6133</color>
+    <color name="colorPrimaryDark">#264636</color>
+    <color name="colorAccent">#2d6133</color>
+    <color name="verdePrimary">#A3D616</color>
+    <color name="collapsingOpaco">#93FF2A68</color>
+    <color name="colorPrimaryOpacity">#802D6133</color>
+    <color name="transparent">#00000000</color>
+</resources>

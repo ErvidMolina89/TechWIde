@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".ui.dash.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/CabeseraNew"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_219dp"
+        android:orientation="vertical"
+        android:background="@drawable/header_profile">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_203dp"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_129dp"
+        android:layout_centerHorizontal="true"
+        android:translationZ="1dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cvPhotoUser"
+            android:layout_width="@dimen/foto_180dp"
+            android:layout_height="@dimen/foto_180dp"
+            android:src="@drawable/playa_la_roca"
+            app:civ_border_width="3pt"
+            app:civ_border_color="@android:color/white"/>
+
+        <LinearLayout
+            android:layout_width="@dimen/icono_50dp"
+            android:layout_height="@dimen/icono_50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/background_camera"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivIconoCamara"
+                android:layout_width="@dimen/dimens_21dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_camera"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_15dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dimen_219dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:background="@android:color/white"
+            android:layout_marginTop="@dimen/margintop_scrollview">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/edt_main"
+                    android:layout_marginTop="@dimen/dimen_8dp">
+                    <EditText
+                        android:id="@+id/editTextEmailNew"
+                        android:layout_width="350dp"
+                        android:layout_height="@dimen/dimen_56dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/prompt_email"
+                        android:textColorHint="@color/colorPrimary"
+                        android:inputType="text"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"
+                        tools:ignore="TextFields" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/edt_main"
+                    android:layout_marginTop="@dimen/dimen_8dp">
+                    <EditText
+                        android:id="@+id/editTextNameNew"
+                        android:layout_width="350dp"
+                        android:layout_height="@dimen/dimen_56dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/name_contact"
+                        android:textColorHint="@color/colorPrimary"
+                        android:inputType="text"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"
+                        tools:ignore="TextFields" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/edt_main"
+                    android:layout_marginTop="@dimen/dimen_8dp">
+                    <EditText
+                        android:id="@+id/editTextLastNameNew"
+                        android:layout_width="350dp"
+                        android:layout_height="@dimen/dimen_56dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/last_name"
+                        android:textColorHint="@color/colorPrimary"
+                        android:inputType="text"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/edt_main"
+                    android:layout_marginTop="@dimen/dimen_8dp">
+                    <EditText
+                        android:id="@+id/editTextIDNew"
+                        android:layout_width="350dp"
+                        android:layout_height="@dimen/dimen_56dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/id_profile"
+                        android:textColorHint="@color/colorPrimary"
+                        android:inputType="number"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnCrear"
+                    style="@style/EstilosEdtBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_56dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:background="@drawable/btn_perfil"
+                    android:textSize="20sp"
+                    android:elevation="5pt"
+                    android:text="@string/btn_create"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

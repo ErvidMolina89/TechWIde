@@ -1,0 +1,29 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="dimen_width_logo">90dp</dimen>
+    <dimen name="dimen_height_logo">150dp</dimen>
+    <dimen name="dimen_45dp">45dp</dimen>
+    <dimen name="font_size39sp">39sp</dimen>
+    <dimen name="dimen_24dp">24dp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_16sp">16sp</dimen>
+    <dimen name="dimen_15dp">15dp</dimen>
+    <dimen name="icono_50dp">50dp</dimen>
+    <dimen name="dimen_80dp">80dp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="dimen_219dp">219dp</dimen>
+    <dimen name="dimen_203dp">203dp</dimen>
+    <dimen name="dimen_129dp">129dp</dimen>
+    <dimen name="foto_180dp">180dp</dimen>
+    <dimen name="dimen_3pt">3pt</dimen>
+    <dimen name="dimens_21dp">21dp</dimen>
+    <dimen name="dimens_18dp">18dp</dimen>
+    <dimen name="margintop_scrollview">115dp</dimen>
+    <dimen name="dimen_56dp">56dp</dimen>
+    <dimen name="dimen_25dp">25dp</dimen>
+    <dimen name="dimen_100dp">100dp</dimen>
+</resources>
