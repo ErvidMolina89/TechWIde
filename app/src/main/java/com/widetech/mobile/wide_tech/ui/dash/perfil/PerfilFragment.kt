@@ -7,9 +7,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +19,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -31,16 +34,18 @@ import com.widetech.mobile.wide_tech.DataAccess.DBLocal.modelsDB.User
 import com.widetech.mobile.wide_tech.R
 import com.widetech.mobile.wide_tech.Utils.ImageRotationDetectionHelper
 import com.widetech.mobile.wide_tech.Utils.OptionCamera
+import com.widetech.mobile.wide_tech.Utils.crearDocumentoImagen
 import kotlinx.android.synthetic.main.fragment_perfil.*
 import java.io.File
 import java.io.IOException
+import java.lang.ClassCastException
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PerfilFragment : BaseFragment() {
 
     private lateinit var notificationsViewModel: PerfilViewModel
-    private val CameraREQUEST: Int = 1
+    private val CameraREQUEST: Int = 1800
     private val GalleryREQUEST: Int = 2
     var resultCodeClick: Int? = null
     var photoBase64: String? = null
@@ -69,8 +74,19 @@ class PerfilFragment : BaseFragment() {
         image = vista?.findViewById(R.id.ivIconoCamara)
         btnCrear = vista?.findViewById(R.id.btnCrear)
         poneEscuchadoresSelectorImagen()
+        crearDocumento()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+    private var documentoImagen : File? = null
+    private fun crearDocumento(){
+        try {
+            documentoImagen = App.mContext?.crearDocumentoImagen()
+        }catch (e:Exception){
+            Log.e("Boton Camara","",e)
+        }
+    }
+
     private fun poneEscuchadoresSelectorImagen() {
         btnCrear?.setOnClickListener {
             if(validateFiels()){
@@ -115,20 +131,20 @@ class PerfilFragment : BaseFragment() {
             val arrayString = Array<String>(1, { Manifest.permission.CAMERA })
             ActivityCompat.requestPermissions(baseActivity!!, arrayString, CameraREQUEST)
         } else {
-            var imageFile: File? = null
-            try {
-                imageFile = createImageFile()
-            } catch (e: IOException) {
-                println("Could not create file!")
-            }
-
             val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (callCameraIntent.resolveActivity(App.mContext!!.packageManager) != null) {
-                val authorities = App.mContext!!.packageName + ".fileprovider"
-                val imageUri = FileProvider.getUriForFile(App.mContext!!, authorities, imageFile!!)
-                callCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                startActivityForResult(callCameraIntent, CameraREQUEST)
-                strCamera = imageFilePath
+
+            if (callCameraIntent.resolveActivity(baseActivity!!.applicationContext.packageManager) == null) return
+
+            val authorities = baseActivity!!.applicationContext.packageName + ".fileprovider"
+            val imageUri = FileProvider.getUriForFile(baseActivity!!.applicationContext, authorities, documentoImagen!!.absoluteFile)
+
+            callCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+            try {
+                (this.context as AppCompatActivity).startActivityForResult(callCameraIntent, CameraREQUEST)
+            } catch (e: ClassCastException) {
+                baseActivity?.startActivityForResult(callCameraIntent, CameraREQUEST)
+            } catch (e :Exception){
+                e.printStackTrace()
             }
         }
     }
@@ -164,7 +180,7 @@ class PerfilFragment : BaseFragment() {
                 }
             }
             //Camara
-            1 -> {
+            CameraREQUEST -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val imagesCap = ImageLoader.init().from(strCamera).requestSize(100, 100).bitmap
                     cvPhotoUser!!.setImageBitmap(imagesCap)
@@ -187,15 +203,5 @@ class PerfilFragment : BaseFragment() {
             }
         }
         resultCodeClick = resultCode
-    }
-
-    fun createImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName: String = "JPEG_" + timeStamp + "_"
-        val storageDir: File = baseActivity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-        if (!storageDir.exists()) storageDir.mkdirs()
-        val imageFile = File.createTempFile(imageFileName, ".jpg", storageDir)
-        imageFilePath = imageFile.absolutePath
-        return imageFile
     }
 }
