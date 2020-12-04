@@ -51,7 +51,7 @@ fun String.showInLogError(error: Throwable ?= null ) : String{
     return this
 }
 
-fun String.encodeToBase64(image: Bitmap, quality: Int): String {
+fun encodeToBase64(image: Bitmap, quality: Int): String {
     val byteArrayOS = ByteArrayOutputStream()
     image.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOS)
     val string = Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT)

@@ -7,6 +7,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.os.Environment
@@ -15,10 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -31,6 +29,7 @@ import com.kosalgeek.android.photoutil.ImageLoader
 import com.widetech.mobile.wide_tech.Base.App
 import com.widetech.mobile.wide_tech.Base.BaseFragment
 import com.widetech.mobile.wide_tech.DataAccess.DBLocal.modelsDB.User
+import com.widetech.mobile.wide_tech.DataAccess.Repositories.RepoSynchronization
 import com.widetech.mobile.wide_tech.R
 import com.widetech.mobile.wide_tech.Utils.ImageRotationDetectionHelper
 import com.widetech.mobile.wide_tech.Utils.OptionCamera
@@ -49,9 +48,7 @@ class PerfilFragment : BaseFragment() {
     private val GalleryREQUEST: Int = 2
     var resultCodeClick: Int? = null
     var photoBase64: String? = null
-    var strCamera: String? = null
-    var imageFilePath: String? = null
-    var ImagenRotation = ImageRotationDetectionHelper()
+    var urlGallery: String? = null
     var email: EditText? = null
     var name: EditText? = null
     var last: EditText? = null
@@ -74,28 +71,30 @@ class PerfilFragment : BaseFragment() {
         image = vista?.findViewById(R.id.ivIconoCamara)
         btnCrear = vista?.findViewById(R.id.btnCrear)
         poneEscuchadoresSelectorImagen()
-        crearDocumento()
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    private var documentoImagen : File? = null
-    private fun crearDocumento(){
-        try {
-            documentoImagen = App.mContext?.crearDocumentoImagen()
-        }catch (e:Exception){
-            Log.e("Boton Camara","",e)
-        }
     }
 
     private fun poneEscuchadoresSelectorImagen() {
         btnCrear?.setOnClickListener {
-            if(validateFiels()){
-                val user = User()
-                user.email  = email?.text.toString()
-                user.id     = ident?.text.toString().toInt()
-                user.name   = name?.text.toString()
-                user.lastName = last?.text.toString()
-                user.image  = ""
+            if(photoBase64.isNullOrEmpty() || urlGallery.isNullOrEmpty()){
+                if(validateFiels()){
+                    val user = User()
+                    user.email  = email?.text.toString()
+                    user.id     = ident?.text.toString().toInt()
+                    user.name   = name?.text.toString()
+                    user.lastName = last?.text.toString()
+                    if (photoBase64 != null || photoBase64 != "") {
+                        user.image = photoBase64
+                    }else{
+                        user.image = urlGallery
+                    }
+                    RepoSynchronization().onInsertUser(App.mContext!!, user)
+                }else{
+                    Toast.makeText(App.mContext, "Te faltan llenar Campos para crear el usuario", Toast.LENGTH_LONG).show()
+                }
+            }else{
+                Toast.makeText(App.mContext, "No has seleccionado una imagen", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
         }
         image?.setOnClickListener {
@@ -111,9 +110,8 @@ class PerfilFragment : BaseFragment() {
         }
 
         override fun callGalleryApp() {
-            val intentCamera = Intent(App.mContext!!, AlbumSelectActivity::class.java)
-            intentCamera.putExtra(ConstantsCustomGallery.INTENT_EXTRA_LIMIT, 10)
-            startActivityForResult(intentCamera, GalleryREQUEST)
+            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(gallery, GalleryREQUEST)
         }
     }
 
@@ -131,74 +129,31 @@ class PerfilFragment : BaseFragment() {
             val arrayString = Array<String>(1, { Manifest.permission.CAMERA })
             ActivityCompat.requestPermissions(baseActivity!!, arrayString, CameraREQUEST)
         } else {
-            val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-            if (callCameraIntent.resolveActivity(baseActivity!!.applicationContext.packageManager) == null) return
-
-            val authorities = baseActivity!!.applicationContext.packageName + ".fileprovider"
-            val imageUri = FileProvider.getUriForFile(baseActivity!!.applicationContext, authorities, documentoImagen!!.absoluteFile)
-
-            callCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-            try {
-                (this.context as AppCompatActivity).startActivityForResult(callCameraIntent, CameraREQUEST)
-            } catch (e: ClassCastException) {
-                baseActivity?.startActivityForResult(callCameraIntent, CameraREQUEST)
-            } catch (e :Exception){
-                e.printStackTrace()
-            }
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent, CameraREQUEST)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-
             //Gallery
-            2 -> {
+            GalleryREQUEST -> {
                 if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
 
-                    val images =  data.getParcelableArrayListExtra<Image>("images")
-                    val photoPath = ImageLoader.init().from(images[0].path).requestSize(100, 100).bitmap
-                    cvPhotoUser!!.setImageBitmap(photoPath)
-
-                    when(ImagenRotation.getCameraPhotoOrientation(images[0].path)){
-
-                        0 -> {
-                            cvPhotoUser!!.rotation = 0f
-                        }
-                        90 -> {
-                            cvPhotoUser!!.rotation = 90f
-                        }
-                        180 -> {
-                            cvPhotoUser!!.rotation = 90f
-                        }
-                        270 -> {
-                            cvPhotoUser!!.rotation = 90f
-                        }
-                    }
-                    photoBase64?.encodeToBase64(photoPath, 100)
+                    val images =  data.data
+                    cvPhotoUser!!.setImageURI(images)
+                    urlGallery = images.toString()
+                    photoBase64 = ""
                 }
             }
             //Camara
             CameraREQUEST -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    val imagesCap = ImageLoader.init().from(strCamera).requestSize(100, 100).bitmap
+                    val imagesCap =  data?.extras?.get("data") as Bitmap
                     cvPhotoUser!!.setImageBitmap(imagesCap)
-                    when(ImagenRotation.getCameraPhotoOrientation(strCamera.toString())){
-                        0 -> {
-                            cvPhotoUser!!.rotation = 0f
-                        }
-                        90 -> {
-                            cvPhotoUser!!.rotation = 90f
-                        }
-                        180 -> {
-                            cvPhotoUser!!.rotation = 90f
-                        }
-                        270 -> {
-                            cvPhotoUser!!.rotation = 90f
-                        }
-                    }
-                    photoBase64?.encodeToBase64(imagesCap, 100)
+                    photoBase64 = encodeToBase64(imagesCap, 100)
+                    urlGallery = ""
                 }
             }
         }
